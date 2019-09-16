@@ -18,11 +18,11 @@ class App extends Component {
             .then(json => {
 
                 if (json.artists.total > 0) {
-                    const artist = json.artist.items[0];
+                  const artist = json.artists.items[0];
 
                     this.setState({ artist });
 
-                    fetch(`${API_ADDRESS}/artist/${artist.id}`)
+                        fetch(`${API_ADDRESS}/artist/${artist.id}/top-tracks`)
                         .then(response => response.json())
                         .then(json => this.setState({ tracks: json.tracks }))
                         .catch(error => alert(error.message));

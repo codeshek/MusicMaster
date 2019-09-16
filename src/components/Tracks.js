@@ -48,7 +48,7 @@ class Tracks extends Component {
                         return (
                             <div
                                 key={id}
-                                 onClick={playAudio(preview_url)}
+                                 onClick={this.playAudio(preview_url)}
                                  className='track'
                                  >
                                 <img 
