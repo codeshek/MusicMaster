@@ -1,54 +1,48 @@
 import React, { Component } from 'react';
-import Projects from './Projects';
-import SocialProfiles from './SocialProfiles';
-import user_profile from '../assets/user_profile.png';
-import Title from './Title';
-import Jokes from './Jokes';
+import Artist from './Artist';
+import Tracks from './Tracks';
+import Search from './Search';
+
+const API_ADDRESS = 'https://spotify-api-wrapper.appspot.com';
 
 class App extends Component {
+    state = { artist: null, tracks: [] };
 
-    state = { displayBio:false };
+    componentDidMount() {
+        this.searchArtist('pentatonix') ;
+    }
 
-    // constructor() {
-    //     super();
-    //     this.state = { displayBio: false } ;
-    //     this.toggleDisplayBio = this.toggleDisplayBio.bind(this);
-    // }
+    searchArtist = artistQuery => {
+        fetch(`${API_ADDRESS}/artist/${artistQuery}`)
+            .then(response => response.json())
+            .then(json => {
 
-    toggleDisplayBio = () => {
-        this.setState({ displayBio: !this.state.displayBio })
+                if (json.artists.total > 0) {
+                    const artist = json.artist.items[0];
+
+                    this.setState({ artist });
+
+                    fetch(`${API_ADDRESS}/artist/${artist.id}`)
+                        .then(response => response.json())
+                        .then(json => this.setState({ tracks: json.tracks }))
+                        .catch(error => alert(error.message));
+                }
+            })
+            .catch(error => alert(error.message));
     }
 
     render() {
 
+        console.log('this.state', this.state);
+
         return (
             <div>
-                <img src={user_profile} alt='user_profile' className='profile' />
-                <h1>Hello!</h1>
-                <p>My name is Abhishek.</p>
-                 { this.state.displayBio ? <Title /> : null}
-                <p>I'm always looking forward to working on legendary projects. </p>
-            {
-                this.state.displayBio ? (
-            <div>
-                <p>I live in Delhi, and code most of time.</p>
-                <p>My favorite language is Javascript, and I think React.js is awesome</p>
-                <p>Besides coding, I also love Cricket and movies.</p>
-                <button onClick={this.toggleDisplayBio}>Show less</button>
+                <h2>Music Master</h2>
+                <Search searchArtist={this.searchArtist} />
+                <Artist artist={this.state.artist} />
+                <Tracks tracks={this.state.tracks} />
             </div>
-        ) : ( 
-            <div>
-                <button onClick={this.toggleDisplayBio}>Read More </button>
-            </div>
-        ) }
-        <hr />
-        <Projects />
-        <hr />
-        <SocialProfiles />
-        <hr />
-        <Jokes />
-        </div>
-        )
+        );
     }
 }
 
