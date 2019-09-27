@@ -2,14 +2,14 @@
   "name": "music-master",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://codeshek.github.io/MusicMaster",
+  "homepage": "https://codeshek.github.io/MusicMaster/",
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "start": "npm run build && live-server dist",
 	"predeploy": "npm run build",
-   "deploy": "gh-pages -d build"
+   "deploy": "gh-pages -d docs"
   },
   "keywords": [],
   "author": "",
